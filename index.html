@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Diary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        background-color: #0a0a0a; /* neutral-950 */
+      }
+
+      /* * Recreating Framer Motion Animations 
+         */
+
+      /* Initial Fade In */
+      .animate-fade-in {
+        animation: fadeIn 1s ease forwards;
+      }
+
+      /* Header Slide Up */
+      .animate-slide-up {
+        opacity: 0;
+        animation: slideUp 0.8s ease forwards;
+        animation-delay: 0.2s;
+      }
+
+      /* Right Panel Slide Left */
+      .animate-slide-left {
+        opacity: 0;
+        animation: slideLeft 0.8s ease forwards;
+        animation-delay: 0.6s;
+      }
+
+      /* Back Button Fade */
+      .animate-fade-in-delayed {
+        opacity: 0;
+        animation: fadeIn 0.8s ease forwards;
+        animation-delay: 1s;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideLeft {
+        from {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      /* * 3D Page Turn Styles (Replicating Framer Motion variants)
+         */
+      #page-container {
+        /* Removed hardcoded heights and widths to allow aspect-[3/4] and responsive max-widths to govern the shape perfectly across all devices */
+        perspective: 1200px; /* Added perspective for better 3D turning effect */
+      }
+
+      .page-element {
+        position: absolute;
+        inset: 0;
+        background-color: #171717; /* neutral-900 */
+        transform-origin: left center;
+        /* Using the exact cubic-bezier from your Framer Motion config */
+        transition:
+          transform 0.6s cubic-bezier(0.64, 0.04, 0.35, 1),
+          opacity 0.6s cubic-bezier(0.64, 0.04, 0.35, 1),
+          box-shadow 0.6s cubic-bezier(0.64, 0.04, 0.35, 1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        backface-visibility: hidden;
+        will-change: transform, opacity;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen w-full bg-neutral-950 text-white font-sans">
+    <section
+      class="min-h-screen w-full flex flex-col relative z-0 px-0 m-0 animate-fade-in overflow-hidden"
+    >
+      <div class="fixed inset-0 pointer-events-none z-[-1]">
+        <div
+          class="absolute top-1/4 left-[5%] w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-blue-600/20 blur-[100px] md:blur-[150px] rounded-full"
+        ></div>
+        <div
+          class="absolute bottom-1/4 right-[5%] w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-pink-600/20 blur-[100px] md:blur-[150px] rounded-full"
+        ></div>
+      </div>
+
+      <div
+        class="w-full flex-1 flex flex-col py-4 lg:py-6 px-3 sm:px-6 lg:px-8 mx-auto max-w-[1920px] z-10"
+      >
+        <div
+          class="text-center mb-6 lg:mb-8 w-full flex-shrink-0 animate-slide-up flex justify-center"
+        >
+          <h2
+            class="text-[1.75rem] md:text-[2rem] lg:text-[2.8rem] font-extralight tracking-[0.2em] uppercase text-white flex items-center justify-center gap-2 lg:gap-4 mt-4 lg:mt-0"
+          >
+            <span>Our
+            <span
+              class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 drop-shadow-[0_0_15px_rgba(168,85,247,0.4)]"
+              >Diary</span
+            ></span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="w-7 h-7 md:w-8 md:h-8 lg:w-10 lg:h-10 text-purple-400 opacity-80 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]"
+            >
+              <path
+                d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"
+              />
+              <path
+                d="M8 7a2.5 2.5 0 1 1 5 0 2.5 2.5 0 1 1 5 0c0 4.5-5 9-5 9s-5-4.5-5-9z"
+              />
+            </svg>
+          </h2>
+        </div>
+
+        <div
+          class="flex flex-col lg:flex-row w-full flex-1 gap-10 lg:gap-12 xl:gap-16 items-center lg:items-start justify-center pb-12 lg:pb-0"
+        >
+          <div
+            class="w-full lg:w-[70%] flex justify-center lg:justify-end xl:justify-center"
+          >
+            <div
+              class="relative flex shadow-[0_30px_60px_rgba(0,0,0,0.6)] group w-full max-w-[300px] sm:max-w-[342px] md:max-w-[399px] lg:max-w-[456px] xl:max-w-[522.5px]"
+            >
+              <div
+                id="binding-container"
+                class="w-8 lg:w-12 xl:w-14 flex-shrink-0 bg-neutral-900 rounded-l-2xl border-r border-black/50 z-30 flex flex-col justify-evenly py-6 shadow-[inset_-5px_0_15px_rgba(0,0,0,0.8)] relative"
+              ></div>
+
+              <div
+                id="page-container"
+                class="relative flex-1 aspect-[3/4] bg-neutral-800 rounded-r-2xl overflow-hidden border border-white/5 border-l-0 cursor-pointer"
+                onclick="handlePageClick()"
+              ></div>
+            </div>
+          </div>
+
+          <div
+            class="w-full lg:w-[30%] flex flex-col items-center lg:items-start justify-center lg:pt-8 xl:pt-12"
+          >
+            <!-- Fixed the translations here: Scoped to lg: so mobile centers naturally -->
+            <div class="w-full flex flex-col items-center lg:items-start lg:-translate-x-[30%] lg:translate-y-[30%]">
+              <div
+                class="w-full flex flex-col items-center lg:items-start gap-6 lg:gap-8 max-w-sm mx-auto lg:mx-0 animate-slide-left"
+              >
+                <!-- Fixed translations here -->
+                <div class="text-center lg:text-left flex flex-col gap-2 lg:translate-x-[15%]">
+                  <h3
+                    id="page-title"
+                    class="text-3xl lg:text-4xl xl:text-5xl font-extralight text-white tracking-wide"
+                  >
+                    Cover
+                  </h3>
+                  <p
+                    class="text-purple-400 text-xs lg:text-sm tracking-[0.2em] uppercase font-medium"
+                  >
+                    Of 8 Total Pages
+                  </p>
+                </div>
+
+                <!-- Fixed translations here -->
+                <div class="flex items-center gap-6 lg:gap-4 xl:gap-6 lg:translate-x-[20%] mt-2 lg:mt-0">
+                  <button
+                    id="btn-prev"
+                    onclick="paginate(-1)"
+                    class="p-4 lg:p-3 xl:p-4 rounded-full border transition-all duration-300"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="w-5 h-5 lg:w-6 lg:h-6"
+                    >
+                      <path d="m15 18-6-6 6-6" />
+                    </svg>
+                  </button>
+
+                  <button
+                    id="btn-next"
+                    onclick="paginate(1)"
+                    class="p-4 lg:p-3 xl:p-4 rounded-full border transition-all duration-300"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="w-5 h-5 lg:w-6 lg:h-6"
+                    >
+                      <path d="m9 18 6-6-6-6" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div
+                  class="w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent lg:from-white/20 lg:via-white/5 lg:to-transparent my-2 lg:my-1"
+                ></div>
+
+                <!-- Fixed translations here -->
+                <form
+                  id="jump-form"
+                  onsubmit="handleJump(event)"
+                  class="flex flex-col items-center lg:items-start gap-4 lg:gap-3 w-full lg:-translate-x-[10%]"
+                >
+                  <div class="relative w-full max-w-[250px] lg:max-w-none mx-auto lg:mx-0">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400"
+                    >
+                      <circle cx="11" cy="11" r="8" />
+                      <path d="m21 21-4.3-4.3" />
+                    </svg>
+                    <input
+                      type="number"
+                      id="jump-input"
+                      min="1"
+                      max="29"
+                      placeholder="Jump..."
+                      class="w-full lg:w-4/5 bg-white/[0.03] backdrop-blur-md border border-white/10 rounded-full py-3 pl-11 pr-4 text-sm lg:text-base text-white placeholder-neutral-500 outline-none focus:border-purple-400 transition-colors shadow-inner"
+                    />
+                  </div>
+                  <button
+                    type="submit" 
+                    class="lg:-translate-x-[30%] w-[180px] lg:w-2/5 px-6 lg:px-8 py-3 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 hover:from-blue-500/20 hover:via-purple-500/20 hover:to-pink-500/20 border border-purple-500/30 hover:border-purple-400 text-purple-300 text-sm font-semibold tracking-wider uppercase rounded-full transition-all duration-300 whitespace-nowrap shadow-[0_0_15px_rgba(168,85,247,0.1)]"
+                  >
+                    Open
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // Constants & State
+      const TOTAL_PAGES = 8;
+      let page = 0;
+      let isAnimating = false;
+
+      // Initialize Scroll
+      window.scrollTo(0, 0);
+
+      // Generate Binding (Spiral loops)
+      const bindingContainer = document.getElementById("binding-container");
+      for (let i = 0; i < TOTAL_PAGES; i++) {
+        bindingContainer.innerHTML += `<div class="w-6 lg:w-10 xl:w-12 h-1.5 lg:h-2 bg-gradient-to-r from-neutral-500 to-neutral-300 rounded-full mx-auto shadow-md relative -left-1 lg:-left-1.5 xl:-left-2 border border-neutral-700"></div>`;
+      }
+
+      // SVG Constants
+      const sparklesSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 lg:w-8 lg:h-8 xl:w-10 xl:h-10 text-purple-400 mb-4 xl:mb-6 opacity-70"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>`;
+      const heartSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 lg:w-8 lg:h-8 xl:w-10 xl:h-10 text-purple-500 fill-purple-500/30 inline-block my-2 xl:my-4 animate-pulse drop-shadow-[0_0_15px_rgba(168,85,247,0.4)]"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>`;
+
+      // Render Page Content Function
+      function getPageHTML(pageNum) {
+        if (pageNum === 0) {
+          return `
+                    <div class="w-full h-full bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900 flex flex-col items-center justify-center p-6 lg:p-10 xl:p-14 text-center relative border-l border-white/10">
+                        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 pointer-events-none"></div>
+                        ${sparklesSvg}
+                        <h1 class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-light tracking-widest mb-3 xl:mb-5 leading-tight">
+                            <span class="text-pink-400 drop-shadow-[0_0_10px_rgba(236,72,153,0.3)]">Maala</span> <br />
+                            ${heartSvg} <br />
+                            <span class="text-blue-400 drop-shadow-[0_0_10px_rgba(59,130,246,0.3)]">Mahir</span>
+                        </h1>
+                        <p class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 font-serif italic text-base lg:text-xl xl:text-2xl mt-3 xl:mt-5 mb-6 xl:mb-8">
+                            Love Story
+                        </p>
+                        <div class="w-16 sm:w-20 lg:w-24 xl:w-32 h-[1px] bg-gradient-to-r from-pink-500/50 via-purple-500/50 to-blue-500/50 mb-6 xl:mb-8"></div>
+                        <p class="text-neutral-400 text-[9px] sm:text-[10px] xl:text-xs tracking-[0.4em] uppercase">
+                            A collection of our words
+                        </p>
+                        <p class="absolute bottom-6 lg:bottom-8 xl:bottom-10 text-[9px] sm:text-[10px] xl:text-xs text-neutral-500 tracking-widest uppercase">
+                            Click Page to Open
+                        </p>
+                    </div>`;
+        } else {
+          return `
+                    <div class="w-full h-full relative bg-black">
+                        <img 
+                            src="Diary/${pageNum}.png" 
+                            alt="Chat page ${pageNum}" 
+                            onerror="handleImageFallback(this, ${pageNum})"
+                            class="w-full h-full object-cover opacity-95" 
+                        />
+                        <div class="absolute bottom-4 right-4 lg:bottom-6 lg:right-6 bg-black/60 backdrop-blur-md px-3 lg:px-4 py-1 lg:py-1.5 rounded-full text-white/80 text-xs lg:text-sm font-light shadow-lg">
+                            Page ${pageNum}
+                        </div>
+                    </div>`;
+        }
+      }
+
+      // Image Fallback Logic
+      window.handleImageFallback = function (img, pageNum) {
+        if (img.dataset.triedFallback !== "true") {
+          img.dataset.triedFallback = "true";
+          img.src = `images/Diary/${pageNum}.jpeg`;
+        }
+      };
+
+      // Click Page container
+      window.handlePageClick = function () {
+        if (page < TOTAL_PAGES) {
+          paginate(1);
+        }
+      };
+
+      // Update UI Side Controls
+      function updateUIControls() {
+        document.getElementById("page-title").innerText =
+          page === 0 ? "Cover" : `Page ${page}`;
+
+        const btnPrev = document.getElementById("btn-prev");
+        if (page === 0) {
+          btnPrev.disabled = true;
+          btnPrev.className =
+            "p-4 lg:p-3 xl:p-4 rounded-full border transition-all duration-300 border-white/5 text-white/10 cursor-not-allowed bg-transparent";
+        } else {
+          btnPrev.disabled = false;
+          btnPrev.className =
+            "p-4 lg:p-3 xl:p-4 rounded-full border transition-all duration-300 border-purple-500/30 text-purple-400 hover:bg-purple-500/10 hover:border-purple-400 lg:hover:-translate-x-1 shadow-[0_0_15px_rgba(168,85,247,0.1)]";
+        }
+
+        const btnNext = document.getElementById("btn-next");
+        if (page === TOTAL_PAGES) {
+          btnNext.disabled = true;
+          btnNext.className =
+            "p-4 lg:p-3 xl:p-4 rounded-full border transition-all duration-300 border-white/5 text-white/10 cursor-not-allowed bg-transparent";
+        } else {
+          btnNext.disabled = false;
+          btnNext.className =
+            "p-4 lg:p-3 xl:p-4 rounded-full border transition-all duration-300 border-purple-500/30 text-purple-400 hover:bg-purple-500/10 hover:border-purple-400 lg:hover:translate-x-1 shadow-[0_0_15px_rgba(168,85,247,0.1)]";
+        }
+      }
+
+      // The Engine: Paginate and run 3D transition
+      function paginate(newDirection) {
+        const targetPage = page + newDirection;
+
+        if (targetPage < 0 || targetPage > TOTAL_PAGES) return;
+        if (isAnimating) return;
+
+        isAnimating = true;
+
+        const container = document.getElementById("page-container");
+        const oldPageElement = container.querySelector(".page-element");
+
+        const newPageElement = document.createElement("div");
+        newPageElement.className = "page-element";
+        newPageElement.innerHTML = getPageHTML(targetPage);
+
+        if (newDirection > 0) {
+          newPageElement.style.transform = "rotateY(90deg)";
+          newPageElement.style.opacity = "0";
+          newPageElement.style.boxShadow =
+            "inset 20px 0px 50px rgba(0,0,0,0.5)";
+          newPageElement.style.zIndex = "1";
+        } else if (newDirection < 0) {
+          newPageElement.style.transform = "rotateY(-90deg)";
+          newPageElement.style.opacity = "0";
+          newPageElement.style.boxShadow =
+            "inset 20px 0px 50px rgba(0,0,0,0.5)";
+          newPageElement.style.zIndex = "1";
+        } else {
+          newPageElement.style.transform = "rotateY(0deg)";
+          newPageElement.style.opacity = "1";
+          newPageElement.style.boxShadow = "inset 0px 0px 0px rgba(0,0,0,0)";
+          newPageElement.style.zIndex = "1";
+        }
+
+        container.appendChild(newPageElement);
+
+        void newPageElement.offsetWidth;
+
+        if (oldPageElement && newDirection !== 0) {
+          oldPageElement.style.zIndex = "0";
+          oldPageElement.style.transform =
+            newDirection > 0 ? "rotateY(-90deg)" : "rotateY(90deg)";
+          oldPageElement.style.opacity = "0";
+          oldPageElement.style.boxShadow =
+            "inset 20px 0px 50px rgba(0,0,0,0.5)";
+        }
+
+        if (newDirection !== 0) {
+          newPageElement.style.transform = "rotateY(0deg)";
+          newPageElement.style.opacity = "1";
+          newPageElement.style.boxShadow = "inset 0px 0px 0px rgba(0,0,0,0)";
+        }
+
+        page = targetPage;
+        updateUIControls();
+
+        setTimeout(() => {
+          if (oldPageElement) {
+            oldPageElement.remove();
+          }
+          isAnimating = false;
+        }, 600);
+      }
+
+      window.handleJump = function (e) {
+        e.preventDefault();
+        const input = document.getElementById("jump-input");
+        const target = parseInt(input.value, 10);
+
+        if (!isNaN(target) && target >= 1 && target <= TOTAL_PAGES) {
+          const jumpDir = target > page ? 1 : -1;
+          input.value = ""; 
+          const currentHold = page;
+          page = target - jumpDir;
+          paginate(jumpDir);
+        }
+      };
+
+      window.handleBack = function () {
+        console.log("Back to Options triggered.");
+        alert("Back to Options");
+      };
+
+      function initializeDiary() {
+        const container = document.getElementById("page-container");
+        const initialPage = document.createElement("div");
+        initialPage.className = "page-element";
+        initialPage.innerHTML = getPageHTML(0);
+        initialPage.style.transform = "rotateY(0deg)";
+        initialPage.style.opacity = "1";
+        initialPage.style.boxShadow = "inset 0px 0px 0px rgba(0,0,0,0)";
+        initialPage.style.zIndex = "1";
+
+        container.appendChild(initialPage);
+        updateUIControls();
+      }
+
+      initializeDiary();
+    </script>
+  </body>
+</html>
